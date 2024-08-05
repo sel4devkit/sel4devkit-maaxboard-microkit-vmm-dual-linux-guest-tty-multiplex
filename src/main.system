@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system>
+    <!--
+        0x200000   = 2097152 bytes    = 2 MiB 
+        0x6000000  = 100663296 bytes  = 96 MiB
+        0x9000000  = 150994944 bytes  = 144 MiB
+        0x10000000 = 268435456 bytes  = 256 MiB
+        0x80000000 = 2147483648 bytes = 2048 MiB
+        0x80000000 = 2147483648 bytes = 2048 MiB
+    -->
+
+    <memory_region name="client_vm_ram_1" size="0xf000000" page_size="0x200000" />
+    <memory_region name="client_vm_ram_2" size="0xf000000" page_size="0x200000" />
+    
+    <memory_region name="gic_vcpu" size="0x1000" phys_addr="0x31020000" />
+    <memory_region name="uart" size="0x1000" phys_addr="0x30860000" />
+
+    <!-- Secondary -->
+    <memory_region name="gpc" size="0x10000" phys_addr="0x303a0000" />
+
+
+    <!-- Transport -->
+    <memory_region name="tx_data_serial_driver" size="0x2000" page_size="0x1000" />
+    <memory_region name="rx_data_serial_driver" size="0x2000" page_size="0x1000" />
+    <memory_region name="tx_data_serial_vmm_1" size="0x2000" page_size="0x1000" />
+    <memory_region name="rx_data_serial_vmm_1" size="0x2000" page_size="0x1000" />
+    <memory_region name="tx_data_serial_vmm_2" size="0x2000" page_size="0x1000" />
+    <memory_region name="rx_data_serial_vmm_2" size="0x2000" page_size="0x1000" />
+
+    <memory_region name="rx_queue_serial_driver" size="0x1000" page_size="0x1000"/>
+    <memory_region name="tx_queue_serial_driver" size="0x1000" page_size="0x1000"/>
+    <memory_region name="tx_queue_serial_vmm_1" size="0x1000" page_size="0x1000"/>
+    <memory_region name="rx_queue_serial_vmm_1" size="0x1000" page_size="0x1000"/>
+    <memory_region name="tx_queue_serial_vmm_2" size="0x1000" page_size="0x1000"/>
+    <memory_region name="rx_queue_serial_vmm_2" size="0x1000" page_size="0x1000"/>
+
+
+    <!-- VMM 1 -->
+    <protection_domain name="CLIENT_VMM-1" priority="50">
+        <program_image path="client_vmm_1.elf" />
+        <map mr="client_vm_ram_1" vaddr="0x40000000" perms="rw" setvar_vaddr="guest_ram_vaddr" />
+
+        <map mr="tx_queue_serial_vmm_1" vaddr="0x6000000" perms="rw" cached="true" setvar_vaddr="serial_tx_queue" />
+        <map mr="rx_queue_serial_vmm_1" vaddr="0x6001000" perms="rw" cached="true" setvar_vaddr="serial_rx_queue" />
+        <map mr="tx_data_serial_vmm_1" vaddr="0x6002000" perms="rw" cached="true" setvar_vaddr="serial_tx_data" />
+        <map mr="rx_data_serial_vmm_1" vaddr="0x6004000" perms="rw" cached="true" setvar_vaddr="serial_rx_data" />
+
+        <virtual_machine name="client_linux-1" id="0" priority="50">
+            <!-- Primary -->
+            <map mr="client_vm_ram_1" vaddr="0x40000000" perms="rwx" />
+            <map mr="gic_vcpu" vaddr="0x31000000" perms="rw" cached="false" />
+
+            <!-- Secondary -->
+            <map mr="gpc" vaddr="0x303a0000" perms="rw" cached="false" />
+        </virtual_machine>
+    </protection_domain>
+
+    <!-- VMM 2 -->
+    <protection_domain name="CLIENT_VMM-2" priority="50">
+        <program_image path="client_vmm_2.elf" />
+        <map mr="client_vm_ram_2" vaddr="0x40000000" perms="rw" setvar_vaddr="guest_ram_vaddr" />
+
+        <map mr="tx_queue_serial_vmm_2" vaddr="0x6000000" perms="rw" cached="true" setvar_vaddr="serial_tx_queue" />
+        <map mr="rx_queue_serial_vmm_2" vaddr="0x6001000" perms="rw" cached="true" setvar_vaddr="serial_rx_queue" />
+        <map mr="tx_data_serial_vmm_2" vaddr="0x6002000" perms="rw" cached="true" setvar_vaddr="serial_tx_data" />
+        <map mr="rx_data_serial_vmm_2" vaddr="0x6004000" perms="rw" cached="true" setvar_vaddr="serial_rx_data" />
+
+        <virtual_machine name="client_linux-2" id="0" priority="50">
+
+            <map mr="client_vm_ram_2" vaddr="0x40000000" perms="rwx" />
+            <map mr="gic_vcpu" vaddr="0x31000000" perms="rw" cached="false" />
+            <map mr="gpc" vaddr="0x303a0000" perms="rw" cached="false" />
+        </virtual_machine>
+    </protection_domain>
+
+     <!-- Virtualiser Transmit (TX) -->
+    <protection_domain name="serial_virt_tx" priority="100" pp="true">
+        <program_image path="serial_virt_tx.elf" />
+        <map mr="tx_queue_serial_driver" vaddr="0x4000000" perms="rw" cached="true" setvar_vaddr="tx_queue_drv" />
+        <map mr="tx_queue_serial_vmm_1" vaddr="0x4001000" perms="rw" cached="true" setvar_vaddr="tx_queue_cli0" />
+        <map mr="tx_queue_serial_vmm_2" vaddr="0x4002000" perms="rw" cached="true"/>
+        <map mr="tx_data_serial_driver" vaddr="0x4004000" perms="rw" cached="true" setvar_vaddr="tx_data_drv" />
+        <map mr="tx_data_serial_vmm_1" vaddr="0x4006000" perms="r" cached="true" setvar_vaddr="tx_data_cli0" />
+        <map mr="tx_data_serial_vmm_2" vaddr="0x4008000" perms="r" cached="true"/>
+    </protection_domain>
+
+     <!-- Virtualiser Receive (RX) -->
+    <protection_domain name="serial_virt_rx" priority="100" pp="true">
+        <program_image path="serial_virt_rx.elf" />
+        <map mr="rx_queue_serial_driver" vaddr="0x4000000" perms="rw" cached="true" setvar_vaddr="rx_queue_drv" />
+        <map mr="rx_queue_serial_vmm_1" vaddr="0x4001000" perms="rw" cached="true" setvar_vaddr="rx_queue_cli0" />
+        <map mr="rx_queue_serial_vmm_2" vaddr="0x4002000" perms="rw" cached="true"/>
+        <map mr="rx_data_serial_driver" vaddr="0x4004000" perms="r" cached="true" setvar_vaddr="rx_data_drv" />
+        <map mr="rx_data_serial_vmm_1" vaddr="0x4006000" perms="rw" cached="true" setvar_vaddr="rx_data_cli0" />
+        <map mr="rx_data_serial_vmm_2" vaddr="0x4008000" perms="rw" cached="true"/>
+        <!-- <map mr="msg_queue" vaddr="0x4010000" perms="rw" cached="true" setvar_vaddr="msg_serial_queue" />
+        <map mr="msg_data"  vaddr="0x4012000" perms="rw" cached="true" setvar_vaddr="msg_serial_data" />
+        <map mr="switch_queue" vaddr="0x4010000" perms="rw" cached="true" setvar_vaddr="switch_serial_queue" />
+        <map mr="switch_data"  vaddr="0x4012000" perms="rw" cached="true" setvar_vaddr="switch_serial_data" /> -->
+    </protection_domain>
+
+    <!-- UART -->
+    <protection_domain name="uart_driver" priority="100" pp="true">
+        <program_image path="uart_driver.elf" />
+        <map mr="uart" vaddr="0x5000000" perms="rw" cached="false" setvar_vaddr="uart_base" />
+        <map mr="rx_queue_serial_driver" vaddr="0x4000000" perms="rw" cached="true" setvar_vaddr="rx_queue" />
+        <map mr="tx_queue_serial_driver" vaddr="0x4001000" perms="rw" cached="true" setvar_vaddr="tx_queue" />
+        <map mr="rx_data_serial_driver" vaddr="0x4002000" perms="rw" cached="true" setvar_vaddr="rx_data" />
+        <map mr="tx_data_serial_driver" vaddr="0x4004000" perms="rw" cached="true" setvar_vaddr="tx_data" />
+        <irq irq="58" id="0"/>
+    </protection_domain>
+
+    <!-- 
+        |CLIENT_VMM-1|1#######1|serial_virt_tx|2#######1|CLIENT_VMM-2|
+        |            |               0                  |            |
+        |            |               #                  |            |
+        |            |               1                  |            |
+        |            |          |uart_driver|0#58|irq|  |            |
+        |            |               2                  |            |
+        |            |               #                  |            |
+        |            |               0                  |            |
+        |            |2#######1|serial_virt_rx|2#######2|            |
+    -->
+    <channel>
+        <end pd="CLIENT_VMM-1" id="1"/>
+        <end pd="serial_virt_tx" id="1"/>
+    </channel>
+    <channel>
+        <end pd="CLIENT_VMM-2" id="1"/>
+        <end pd="serial_virt_tx" id="2"/>
+    </channel>
+    <channel>
+        <end pd="uart_driver" id="1"/>
+        <end pd="serial_virt_tx" id="0"/>
+    </channel>
+    <channel>
+        <end pd="CLIENT_VMM-1" id="2"/>
+        <end pd="serial_virt_rx" id="1"/>
+    </channel>
+    <channel>
+        <end pd="CLIENT_VMM-2" id="2"/>
+        <end pd="serial_virt_rx" id="2"/>
+    </channel>
+    <channel>
+        <end pd="uart_driver" id="2"/>
+        <end pd="serial_virt_rx" id="0"/>
+    </channel>
+
+</system>
