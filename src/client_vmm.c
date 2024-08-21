@@ -5,6 +5,7 @@
  */
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <microkit.h>
 #include <libvmm/guest.h>
 #include <libvmm/virq.h>
@@ -114,12 +115,14 @@ void notified(microkit_channel ch)
  * whenever our guest causes an exception, it gets delivered to this entry point for
  * the VMM to handle.
  */
-void fault(microkit_id id, microkit_msginfo msginfo)
-{
-    bool success = fault_handle(id, msginfo);
+seL4_Bool fault(microkit_child child, microkit_msginfo msginfo, microkit_msginfo *reply_msginfo) {
+    bool success = fault_handle(child, msginfo);
     if (success) {
         /* Now that we have handled the fault successfully, we reply to it so
          * that the guest can resume execution. */
-        microkit_fault_reply(microkit_msginfo_new(0, 0));
+        *reply_msginfo = microkit_msginfo_new(0, 0);
+        return seL4_True;
     }
+
+    return seL4_False;
 }

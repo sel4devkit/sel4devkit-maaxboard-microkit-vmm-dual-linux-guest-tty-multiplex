@@ -41,11 +41,11 @@ usage:
 #===========================================================
 .PHONY: get
 get: | ${TMP_PATH}
-	git -C ${TMP_PATH} clone --branch "main" "git@github.com:sel4devkit/sel4devkit-maaxboard-microkit-dev.git" sel4devkit-maaxboard-microkit-dev
-	make -C ${TMP_PATH}/sel4devkit-maaxboard-microkit-dev get
+	git -C ${TMP_PATH} clone --branch "main" "git@github.com:sel4devkit/sel4devkit-maaxboard-microkit.git" sel4devkit-maaxboard-microkit
+	make -C ${TMP_PATH}/sel4devkit-maaxboard-microkit get
 
 .PHONY: all
-all: ${OUT_PATH}/microkit-sdk-1.2.6
+all: ${OUT_PATH}/microkit-sdk-1.4.1
 
 ${TMP_PATH}:
 	mkdir ${TMP_PATH}
@@ -53,11 +53,11 @@ ${TMP_PATH}:
 ${OUT_PATH}:
 	mkdir ${OUT_PATH}
 
-${OUT_PATH}/microkit-sdk-1.2.6: ${TMP_PATH}/sel4devkit-maaxboard-microkit-dev/out/microkit-sdk-1.2.6 | ${OUT_PATH}
+${OUT_PATH}/microkit-sdk-1.4.1: ${TMP_PATH}/sel4devkit-maaxboard-microkit/out/microkit-sdk-1.4.1 | ${OUT_PATH}
 	cp -r $< $@
 
-${TMP_PATH}/sel4devkit-maaxboard-microkit-dev/out/microkit-sdk-1.2.6: | ${TMP_PATH}
-	make -C ${TMP_PATH}/sel4devkit-maaxboard-microkit-dev all
+${TMP_PATH}/sel4devkit-maaxboard-microkit/out/microkit-sdk-1.4.1: | ${TMP_PATH}
+	make -C ${TMP_PATH}/sel4devkit-maaxboard-microkit all
 	
 .PHONY: clean
 clean:

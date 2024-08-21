@@ -50,7 +50,7 @@ usage:
 MKT_BOARD := maaxboard
 MKT_CONFIG := debug
 
-MKT_SDK := ${DEP_MKT_PATH}/out/microkit-sdk-1.2.6
+MKT_SDK := ${DEP_MKT_PATH}/out/microkit-sdk-1.4.1
 
 MKT_PATH_FILE := ${MKT_SDK}/bin/microkit
 MKT_RTM_PATH_FILE := ${MKT_SDK}/board/${MKT_BOARD}/${MKT_CONFIG}
