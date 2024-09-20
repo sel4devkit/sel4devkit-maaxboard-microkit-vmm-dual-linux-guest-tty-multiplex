@@ -307,13 +307,8 @@ clean:
 	make -C ${DEP_DTS_PATH} clean
 	make -C ${DEP_GST_PATH} clean
 	make -C ${DEP_LVM_PATH} clean
+	make -C ${DEP_MKT_PATH} clean
 	rm -rf ${TMP_PATH}
-
-.PHONY: reset
-reset: clean
-	make -C ${DEP_DTS_PATH} reset
-	make -C ${DEP_GST_PATH} reset
-	make -C ${DEP_LVM_PATH} reset
 	rm -rf ${OUT_PATH}
 
 #===============================================================================
