@@ -40,7 +40,9 @@ usage:
 # Target
 #===========================================================
 .PHONY: get
-get: | ${TMP_PATH}
+get: | ${TMP_PATH}/sel4devkit-maaxboard-linux-guest
+
+${TMP_PATH}/sel4devkit-maaxboard-linux-guest: | ${TMP_PATH}
 	git -C ${TMP_PATH} clone --branch "main" "git@github.com:sel4devkit/sel4devkit-maaxboard-linux-guest.git" sel4devkit-maaxboard-linux-guest
 	make -C ${TMP_PATH}/sel4devkit-maaxboard-linux-guest get
 

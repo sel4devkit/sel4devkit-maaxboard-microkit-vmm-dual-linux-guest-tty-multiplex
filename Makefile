@@ -114,7 +114,7 @@ dep-get:
 	make -C ${DEP_MKT_PATH} get
 	
 .PHONY: all
-all: dep-all ${OUT_PATH}/loader.img
+all: dep-all ${OUT_PATH}/program.img
 
 .PHONY: dep-all
 dep-all: 
@@ -129,7 +129,7 @@ ${TMP_PATH}:
 ${OUT_PATH}:
 	mkdir ${OUT_PATH}
 
-${OUT_PATH}/loader.img: ${MKT_PATH_FILE} ${SRC_PATH}/main.system ${TMP_PATH}/client_vmm_1.elf ${TMP_PATH}/client_vmm_2.elf ${TMP_PATH}/serial_virt_tx.elf ${TMP_PATH}/serial_virt_rx.elf ${TMP_PATH}/uart_driver.elf ${OUT_PATH}
+${OUT_PATH}/program.img: ${MKT_PATH_FILE} ${SRC_PATH}/main.system ${TMP_PATH}/client_vmm_1.elf ${TMP_PATH}/client_vmm_2.elf ${TMP_PATH}/serial_virt_tx.elf ${TMP_PATH}/serial_virt_rx.elf ${TMP_PATH}/uart_driver.elf ${OUT_PATH}
 	${MKT_PATH_FILE} ${SRC_PATH}/main.system --search-path ${TMP_PATH} --board ${MKT_BOARD} --config ${MKT_CONFIG} --output ${OUT_PATH}/main.img --report ${OUT_PATH}/report.txt
 
 
@@ -283,8 +283,6 @@ ${TMP_PATH}/uart.o: ${DEP_LVM_PATH}/out/libvmm/dep/sddf/drivers/serial/imx/uart.
 	-I ${MKT_RTM_PATH_FILE}/include \
 	$< \
 	-o $@
-
-
 
 ${TMP_PATH}/sddf_printf.o: ${DEP_LVM_PATH}/out/libvmm/dep/sddf/util/printf.c | ${TMP_PATH}
 	${CC} \

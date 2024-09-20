@@ -40,7 +40,9 @@ usage:
 # Target
 #===========================================================
 .PHONY: get
-get: | ${TMP_PATH}
+get: | ${TMP_PATH}/sel4devkit-maaxboard-microkit
+
+${TMP_PATH}/sel4devkit-maaxboard-microkit: | ${TMP_PATH}
 	git -C ${TMP_PATH} clone --branch "main" "git@github.com:sel4devkit/sel4devkit-maaxboard-microkit.git" sel4devkit-maaxboard-microkit
 	make -C ${TMP_PATH}/sel4devkit-maaxboard-microkit get
 
@@ -58,7 +60,7 @@ ${OUT_PATH}/microkit-sdk-1.4.1: ${TMP_PATH}/sel4devkit-maaxboard-microkit/out/mi
 
 ${TMP_PATH}/sel4devkit-maaxboard-microkit/out/microkit-sdk-1.4.1: | ${TMP_PATH}
 	make -C ${TMP_PATH}/sel4devkit-maaxboard-microkit all
-	
+
 .PHONY: clean
 clean:
 	rm -rf ${TMP_PATH}

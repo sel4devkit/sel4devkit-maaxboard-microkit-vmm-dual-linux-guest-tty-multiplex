@@ -1,7 +1,7 @@
-# 0 "linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts"
+# 0 "tmp/linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts"
+# 1 "tmp/linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts"
 
 
 
@@ -9,37 +9,37 @@
 
 /dts-v1/;
 
-# 1 "linux-imx/include/dt-bindings/usb/pd.h" 1
-# 9 "linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts" 2
-# 1 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 1
+# 1 "tmp/linux-imx/include/dt-bindings/usb/pd.h" 1
+# 9 "tmp/linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts" 2
+# 1 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 1
 
 
 
 
 
 
-# 1 "linux-imx/include/dt-bindings/clock/imx8mq-clock.h" 1
-# 8 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
-# 1 "linux-imx/include/dt-bindings/power/imx8mq-power.h" 1
-# 9 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
-# 1 "linux-imx/include/dt-bindings/reset/imx8mq-reset.h" 1
-# 10 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
-# 1 "linux-imx/include/dt-bindings/gpio/gpio.h" 1
-# 11 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
-# 1 "linux-imx/include/dt-bindings/input/input.h" 1
-# 13 "linux-imx/include/dt-bindings/input/input.h"
-# 1 "linux-imx/include/dt-bindings/input/linux-event-codes.h" 1
-# 14 "linux-imx/include/dt-bindings/input/input.h" 2
-# 12 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
-# 1 "linux-imx/include/dt-bindings/interrupt-controller/arm-gic.h" 1
-# 9 "linux-imx/include/dt-bindings/interrupt-controller/arm-gic.h"
-# 1 "linux-imx/include/dt-bindings/interrupt-controller/irq.h" 1
-# 10 "linux-imx/include/dt-bindings/interrupt-controller/arm-gic.h" 2
-# 13 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
-# 1 "linux-imx/include/dt-bindings/thermal/thermal.h" 1
-# 14 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
-# 1 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq-pinfunc.h" 1
-# 15 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
+# 1 "tmp/linux-imx/include/dt-bindings/clock/imx8mq-clock.h" 1
+# 8 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
+# 1 "tmp/linux-imx/include/dt-bindings/power/imx8mq-power.h" 1
+# 9 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
+# 1 "tmp/linux-imx/include/dt-bindings/reset/imx8mq-reset.h" 1
+# 10 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
+# 1 "tmp/linux-imx/include/dt-bindings/gpio/gpio.h" 1
+# 11 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
+# 1 "tmp/linux-imx/include/dt-bindings/input/input.h" 1
+# 13 "tmp/linux-imx/include/dt-bindings/input/input.h"
+# 1 "tmp/linux-imx/include/dt-bindings/input/linux-event-codes.h" 1
+# 14 "tmp/linux-imx/include/dt-bindings/input/input.h" 2
+# 12 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
+# 1 "tmp/linux-imx/include/dt-bindings/interrupt-controller/arm-gic.h" 1
+# 9 "tmp/linux-imx/include/dt-bindings/interrupt-controller/arm-gic.h"
+# 1 "tmp/linux-imx/include/dt-bindings/interrupt-controller/irq.h" 1
+# 10 "tmp/linux-imx/include/dt-bindings/interrupt-controller/arm-gic.h" 2
+# 13 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
+# 1 "tmp/linux-imx/include/dt-bindings/thermal/thermal.h" 1
+# 14 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
+# 1 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq-pinfunc.h" 1
+# 15 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi" 2
 
 / {
  interrupt-parent = <&gpc>;
@@ -766,7 +766,7 @@
       #power-domain-cells = <0>;
       reg = <0>;
      };
-# 757 "linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi"
+# 757 "tmp/linux-imx/arch/arm64/boot/dts/freescale/imx8mq.dtsi"
      pgc_pcie: power-domain@1 {
       #power-domain-cells = <0>;
       reg = <1>;
@@ -1681,7 +1681,7 @@
   status = "disabled";
  };
 };
-# 10 "linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts" 2
+# 10 "tmp/linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts" 2
 
 / {
  model = "Avnet MaaXBoard";

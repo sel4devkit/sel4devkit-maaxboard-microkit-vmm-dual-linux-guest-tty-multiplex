@@ -51,7 +51,9 @@ all:
 else
 
 .PHONY: get
-get: | ${TMP_PATH}
+get: | ${TMP_PATH}/linux-imx
+
+${TMP_PATH}/linux-imx: | ${TMP_PATH}
 	git -C ${TMP_PATH} clone --branch "maaxboard_lf-6.1.22-2.0.0" "git@github.com:Avnet/linux-imx.git" linux-imx
 
 .PHONY: all
@@ -66,7 +68,7 @@ ${OUT_PATH}:
 ${OUT_PATH}/maaxboard.dts: ${TMP_PATH}/maaxboard.dts | ${OUT_PATH}
 	cp -r $< $@
 
-${TMP_PATH}/maaxboard.dts: ${TMP_PATH}/linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts | ${TMP_PATH}
+${TMP_PATH}/maaxboard.dts: | ${TMP_PATH}/linux-imx/arch/arm64/boot/dts/freescale/maaxboard.dts ${TMP_PATH}
 	cpp -nostdinc -I ${TMP_PATH}/linux-imx/include -undef -x assembler-with-cpp $< -o $@
 
 endif

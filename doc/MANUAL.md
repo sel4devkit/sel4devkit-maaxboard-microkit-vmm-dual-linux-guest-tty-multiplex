@@ -1,31 +1,54 @@
-## Introduction
+# Introduction
 
-This repo demonstrates the ability to load two Linux guest VM's simultaneously with serial I/O to both of them via the means of a switch. The target board for this repo is the Maaxboard. This project makes use of [Libvmm](https://github.com/au-ts/libvmm/tree/main) and has reworked the following examples in the below repo to work with the Maaxboard:
+This Package forms part of the seL4 Developer Kit. It provides a fully
+coordinated build of a MaaXBoard Microkit program which leverages BuildRoot
+(embedded Linux build facility) and libvmm (virtual machine monitor for the
+seL4 microkernel) to provide two virtualised Linux Guests, each interacting
+with a virtual UART (virtio-console), being controlled via a switchable
+multiplexed UART, connected to the physical UART.
 
-## Project environment
-This [Docker environment](https://github.com/sel4devkit/sel4devkit-maaxboard-microkit-docker-dev-env) must be used to build this project and to build U-Boot.
+# Usage
 
-Clone the above repository and run the following commands (replacing the arguments for "make run" with actual paths):
+Must be invoked inside the following:
+* sel4devkit-maaxboard-microkit-docker-dev-env
 
+Show usage instructions:
 ```
-make pull IMAGE=sdk
-make build IMAGE=user-me
-make run IMAGE=user-me HOST_PATH=/path/to/selected/host/ HOME_PATH=/path/to/home
+make
 ```
-For U-Boot clone and build this [repository](https://github.com/sel4-cap/sel4devkit-maaxboard-bootloader-u-boot ) in the above Docker environment. 
 
-For information on how to set up a development environment see our [guide](https://sel4devkit.github.io/)
+Build:
+```
+make get
+make all
+``` 
 
-## Building the project
+Where executed on the MaaXBoard, both Virtualised Linux Guests execute in
+parallel. As such, during boot, output from both Linux Guests will be
+presented at the same time, which can look muddled. Once booted and stable,
+each Linux Guest may be interacted with as desired. To select which Linux
+Guest shall receive input, type either "@1" or "@2".
 
-To build the project:
+## Retain Previously Built Output 
 
-```make all```
+For consistency and understanding, it is generally desirable to be able to
+build from source. However, in this instance, the build process can be
+particularly time consuming. As a concession, the build output is prepared in
+advance, and retained in the Package. Where this previously built output is
+present, it shall block a rebuild. If the previously built output be removed
+(`make reset`), then a rebuild may be triggered (`make all`).
 
-Then copy the out/main.img to the Maaxboard.
+The retention of build artefacts is ordinarily avoided, and this is reflected
+in the configured set of file types to be ignored. As such, following a
+rebuild, to examine and retain the resulting content (including build
+artefacts), instruct git as follows:
 
-## Running the project
+Examine all files, including any that are ordinarily ignored:
+```
+git status --ignored
+```
 
-Both VM's are loaded simultaneously, so output from both VM's will be seen at the same time. A prompt will ask for the password which is 'root'.
-
-To switch between the VMs type @ followed by 1, or 0. You will see output from both VM's but only be able to interact with one at a time.
+Force the addition of files, even if they ordinarily ignored:
+```
+git add --force <Path Files>
+```
