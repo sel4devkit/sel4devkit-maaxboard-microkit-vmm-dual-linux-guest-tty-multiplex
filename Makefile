@@ -129,8 +129,8 @@ ${TMP_PATH}:
 ${OUT_PATH}:
 	mkdir ${OUT_PATH}
 
-${OUT_PATH}/program.img: ${MKT_PATH_FILE} ${SRC_PATH}/main.system ${TMP_PATH}/client_vmm_1.elf ${TMP_PATH}/client_vmm_2.elf ${TMP_PATH}/serial_virt_tx.elf ${TMP_PATH}/serial_virt_rx.elf ${TMP_PATH}/uart_driver.elf ${OUT_PATH}
-	${MKT_PATH_FILE} ${SRC_PATH}/main.system --search-path ${TMP_PATH} --board ${MKT_BOARD} --config ${MKT_CONFIG} --output ${OUT_PATH}/main.img --report ${OUT_PATH}/report.txt
+${OUT_PATH}/program.img: ${MKT_PATH_FILE} ${SRC_PATH}/program.system ${TMP_PATH}/client_vmm_1.elf ${TMP_PATH}/client_vmm_2.elf ${TMP_PATH}/serial_virt_tx.elf ${TMP_PATH}/serial_virt_rx.elf ${TMP_PATH}/uart_driver.elf ${OUT_PATH}
+	${MKT_PATH_FILE} ${SRC_PATH}/program.system --search-path ${TMP_PATH} --board ${MKT_BOARD} --config ${MKT_CONFIG} --output ${OUT_PATH}/program.img --report ${OUT_PATH}/report.txt
 
 
 ${TMP_PATH}/client_vmm_1.elf: ${TMP_PATH}/client_vmm.o ${TMP_PATH}/client_images_1.o ${LIBVMM_OBJS} ${SDDF_OBJS} | ${TMP_PATH}
